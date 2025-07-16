@@ -1,6 +1,25 @@
 # Segundo Proyecto Backend - 300h
 
-Este proyecto forma parte del diplomado de desarrollo web full stack. El objetivo es construir la estructura base del backend utilizando Node.js, Express.js y MongoDB, siguiendo buenas prácticas de organización, modularidad y control de versiones.
+## Funcionalidad actual
+
+Este backend permite:
+
+- Crear usuarios con los campos: nombre, correo, contraseña y rol.
+- Almacenar los usuarios en MongoDB.
+- Probar la API con Postman en la ruta `POST /usuarios`.
+
+## Prueba con Postman
+
+**URL:** `http://localhost:3000/usuarios`  
+**Método:** POST  
+**Body (JSON):**
+```json
+{
+  "nombre": "Andrés Molano",
+  "correo": "andres@correo.com",
+  "contraseña": "123456",
+  "rol": "usuario"
+}
 
 ---
 
@@ -16,25 +35,8 @@ Este proyecto forma parte del diplomado de desarrollo web full stack. El objetiv
 
 ---
 
-## 📁 Estructura del proyecto
 
-segundo-proyecto-backend-300h/
-│
-├── backend/
-│ ├── app.js # Archivo principal del servidor
-│ ├── .env # Variables de entorno
-│ ├── .gitignore # Ignorar node_modules y archivos sensibles
-│ ├── models/
-│ │ └── Usuario.js # Modelo de datos de Usuario
-│ ├── controllers/
-│ │ └── usuarios.controller.js # Lógica para gestionar usuarios
-│ ├── routes/
-│ │ └── usuarios.routes.js # Rutas relacionadas con usuarios
-│ └── README.md # Este archivo
-├── package.json # Configuración del proyecto y scripts
-└── node_modules/ # Dependencias (no se sube a GitHub)
-
-✍️ Autor
+ Autor
 Andrés Molano
 
 
