@@ -1,3 +1,5 @@
+<h2>Iniciar Sesión</h2>
+
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
   <div class="mb-3">
     <label for="correo" class="form-label">Correo electrónico</label>
@@ -6,22 +8,25 @@
       class="form-control"
       id="correo"
       formControlName="correo"
+      [class.is-invalid]="f['correo'].invalid && f['correo'].touched"
     />
-    <div *ngIf="loginForm.get('correo')?.invalid && loginForm.get('correo')?.touched" class="text-danger">
-      Correo inválido
+    <div *ngIf="f['correo'].invalid && f['correo'].touched" class="text-danger">
+      <div *ngIf="f['correo'].errors?.['required']">El correo es obligatorio</div>
+      <div *ngIf="f['correo'].errors?.['email']">Formato de correo inválido</div>
     </div>
   </div>
 
   <div class="mb-3">
-    <label for="contraseña" class="form-label">Contraseña</label>
+    <label for="password" class="form-label">Contraseña</label>
     <input
       type="password"
       class="form-control"
-      id="contraseña"
-      formControlName="contraseña"
+      id="password"
+      formControlName="password"
+      [class.is-invalid]="f['password'].invalid && f['password'].touched"
     />
-    <div *ngIf="loginForm.get('contraseña')?.invalid && loginForm.get('contraseña')?.touched" class="text-danger">
-      Contraseña requerida
+    <div *ngIf="f['password'].invalid && f['password'].touched" class="text-danger">
+      <div *ngIf="f['password'].errors?.['required']">La contraseña es obligatoria</div>
     </div>
   </div>
 
@@ -33,5 +38,6 @@
     {{ error }}
   </div>
 </form>
+
 
 

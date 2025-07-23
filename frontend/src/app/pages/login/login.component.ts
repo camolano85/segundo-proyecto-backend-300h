@@ -1,48 +1,51 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
+  templateUrl: './login.component.html',
 })
 export class LoginComponent {
-  loginForm: FormGroup;
-  error: string = '';
+  loginForm!: FormGroup;
+  error: string | null = null;
 
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    private fb: FormBuilder
-  ) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.loginForm = this.fb.group({
       correo: ['', [Validators.required, Validators.email]],
-      contraseña: ['', Validators.required],
+      password: ['', Validators.required], // sin "ñ"
     });
   }
 
+  get f() {
+    return this.loginForm.controls;
+  }
+
   onSubmit(): void {
-    if (this.loginForm.invalid) return;
+    if (this.loginForm.invalid) {
+      return;
+    }
 
-    const { correo, contraseña } = this.loginForm.value;
+    const { correo, password } = this.loginForm.value;
 
-    this.authService.login({ correo, contraseña }).subscribe({
-      next: (response) => {
-        this.authService.guardarToken(response.token);
+    this.authService.login({ correo, password }).subscribe({
+      next: (respuesta) => {
+        this.authService.guardarToken(respuesta.token);
         this.router.navigate(['/dashboard']);
       },
-      error: (err: any) => {
-        console.error('Error en login:', err);
-        this.error = 'Credenciales inválidas o error del servidor.';
+      error: (err) => {
+        console.error(err);
+        this.error = 'Correo o contraseña incorrectos';
       },
     });
   }
 }
+
+
 
 
 

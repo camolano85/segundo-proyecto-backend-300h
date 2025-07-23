@@ -1,5 +1,17 @@
+
 <nav>
   <a routerLink="/">Inicio</a> |
-  <a routerLink="/login">Login</a> |
-  <a routerLink="/dashboard">Dashboard</a>
+  <a routerLink="/dashboard">Dashboard</a> |
+
+  <ng-container *ngIf="usuario; else noLogin">
+    <span>Hola, {{ usuario.nombre }}</span> |
+    <button (click)="cerrarSesion()">Cerrar sesión</button>
+  </ng-container>
+
+  <ng-template #noLogin>
+    <a routerLink="/login">Login</a> |
+    <a routerLink="/registro">Registro</a>
+  </ng-template>
 </nav>
+
+

@@ -1,46 +1,54 @@
 <div class="registro-container">
   <h2>Registro de Usuario</h2>
 
-  <form (ngSubmit)="registrarUsuario()" #formRef="ngForm">
-    <div class="form-group">
+  <form [formGroup]="registroForm" (ngSubmit)="registrarUsuario()">
+    <div class="form-group mb-3">
       <label for="nombre">Nombre</label>
       <input
         type="text"
         id="nombre"
-        name="nombre"
         class="form-control"
-        [(ngModel)]="usuario.nombre"
-        required
+        formControlName="nombre"
       />
+      <div *ngIf="registroForm.get('nombre')?.invalid && registroForm.get('nombre')?.touched" class="text-danger">
+        El nombre es obligatorio.
+      </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group mb-3">
       <label for="correo">Correo</label>
       <input
         type="email"
         id="correo"
-        name="correo"
         class="form-control"
-        [(ngModel)]="usuario.correo"
-        required
+        formControlName="correo"
       />
+      <div *ngIf="registroForm.get('correo')?.invalid && registroForm.get('correo')?.touched" class="text-danger">
+        Correo inválido.
+      </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group mb-3">
       <label for="password">Contraseña</label>
       <input
         type="password"
         id="password"
-        name="password"
         class="form-control"
-        [(ngModel)]="usuario.password"
-        required
+        formControlName="password"
       />
+      <div *ngIf="registroForm.get('password')?.invalid && registroForm.get('password')?.touched" class="text-danger">
+        La contraseña es obligatoria (mínimo 6 caracteres).
+      </div>
     </div>
 
-    <button type="submit" class="btn btn-primary" [disabled]="formRef.invalid">
+    <button type="submit" class="btn btn-primary" [disabled]="registroForm.invalid">
       Registrarse
     </button>
+
+    <div *ngIf="error" class="alert alert-danger mt-3">
+      {{ error }}
+    </div>
   </form>
 </div>
+
 
