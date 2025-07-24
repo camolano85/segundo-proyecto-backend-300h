@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 })
 export class RegistroComponent {
   registroForm: FormGroup;
+  mensaje: string = '';
   error: string = '';
 
   constructor(
@@ -23,24 +24,29 @@ export class RegistroComponent {
     this.registroForm = this.fb.group({
       nombre: ['', Validators.required],
       correo: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', Validators.required]
     });
   }
 
-  registrarUsuario() {
-    if (this.registroForm.invalid) return;
-
-    this.authService.registrar(this.registroForm.value).subscribe({
-      next: () => {
-        this.router.navigate(['/login']);
-      },
-      error: (err: any) => {
-        console.error('Error en registro:', err);
-        this.error = 'Error al registrar. Intente nuevamente.';
-      },
-    });
+  onSubmit(): void {
+    if (this.registroForm.valid) {
+      this.authService.registrar(this.registroForm.value).subscribe({
+        next: () => {
+          this.mensaje = '¡Registro exitoso! Ahora puedes iniciar sesión.';
+          this.error = '';
+          this.registroForm.reset();
+        },
+        error: () => {
+          this.error = 'El correo ya está registrado.';
+          this.mensaje = '';
+        }
+      });
+    }
   }
 }
+
+
+
 
 
 

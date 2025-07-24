@@ -1,50 +1,51 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
-  error: string | null = null;
+  error: string = '';
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
     this.loginForm = this.fb.group({
       correo: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required], // sin "ñ"
+      password: ['', Validators.required]
     });
-  }
-
-  get f() {
-    return this.loginForm.controls;
   }
 
   onSubmit(): void {
-    if (this.loginForm.invalid) {
-      return;
-    }
+    if (this.loginForm.invalid) return;
 
-    const { correo, password } = this.loginForm.value;
+    const credenciales = this.loginForm.getRawValue() as { correo: string; password: string };
 
-    this.authService.login({ correo, password }).subscribe({
+    this.authService.login(credenciales).subscribe({
       next: (respuesta) => {
-        this.authService.guardarToken(respuesta.token);
+        const token = respuesta.token;
+        this.authService.guardarToken(token);
         this.router.navigate(['/dashboard']);
       },
-      error: (err) => {
-        console.error(err);
-        this.error = 'Correo o contraseña incorrectos';
-      },
+      error: (error) => {
+        console.error(error);
+        this.error = 'Credenciales inválidas o error del servidor.';
+      }
     });
   }
 }
-
 
 
 

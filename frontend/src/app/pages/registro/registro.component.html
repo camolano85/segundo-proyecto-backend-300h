@@ -1,54 +1,39 @@
-<div class="registro-container">
-  <h2>Registro de Usuario</h2>
+<section class="registro-container">
+  <h1>📝 Crear tu cuenta en TecnoMarket</h1>
+  <p>Ingresa tus datos para comenzar a comprar los mejores computadores.</p>
 
-  <form [formGroup]="registroForm" (ngSubmit)="registrarUsuario()">
-    <div class="form-group mb-3">
-      <label for="nombre">Nombre</label>
-      <input
-        type="text"
-        id="nombre"
-        class="form-control"
-        formControlName="nombre"
-      />
-      <div *ngIf="registroForm.get('nombre')?.invalid && registroForm.get('nombre')?.touched" class="text-danger">
-        El nombre es obligatorio.
+  <form [formGroup]="registroForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="nombre">👤 Nombre completo</label>
+      <input id="nombre" formControlName="nombre" type="text" placeholder="Juan Pérez">
+      <div *ngIf="registroForm.get('nombre')?.invalid && registroForm.get('nombre')?.touched">
+        <small>El nombre es obligatorio.</small>
       </div>
     </div>
 
-    <div class="form-group mb-3">
-      <label for="correo">Correo</label>
-      <input
-        type="email"
-        id="correo"
-        class="form-control"
-        formControlName="correo"
-      />
-      <div *ngIf="registroForm.get('correo')?.invalid && registroForm.get('correo')?.touched" class="text-danger">
-        Correo inválido.
+    <div class="form-group">
+      <label for="correo">📧 Correo electrónico</label>
+      <input id="correo" formControlName="correo" type="email" placeholder="juan@correo.com">
+      <div *ngIf="registroForm.get('correo')?.invalid && registroForm.get('correo')?.touched">
+        <small *ngIf="registroForm.get('correo')?.errors?.['required']">El correo es obligatorio.</small>
+        <small *ngIf="registroForm.get('correo')?.errors?.['email']">Correo inválido.</small>
       </div>
     </div>
 
-    <div class="form-group mb-3">
-      <label for="password">Contraseña</label>
-      <input
-        type="password"
-        id="password"
-        class="form-control"
-        formControlName="password"
-      />
-      <div *ngIf="registroForm.get('password')?.invalid && registroForm.get('password')?.touched" class="text-danger">
-        La contraseña es obligatoria (mínimo 6 caracteres).
+    <div class="form-group">
+      <label for="password">🔒 Contraseña</label>
+      <input id="password" formControlName="password" type="password" placeholder="********">
+      <div *ngIf="registroForm.get('password')?.invalid && registroForm.get('password')?.touched">
+        <small>La contraseña es obligatoria.</small>
       </div>
     </div>
 
-    <button type="submit" class="btn btn-primary" [disabled]="registroForm.invalid">
-      Registrarse
-    </button>
+    <button type="submit" [disabled]="registroForm.invalid">Registrarse</button>
 
-    <div *ngIf="error" class="alert alert-danger mt-3">
-      {{ error }}
-    </div>
+    <div *ngIf="mensaje" class="mensaje-exito">{{ mensaje }}</div>
+    <div *ngIf="error" class="mensaje-error">{{ error }}</div>
   </form>
-</div>
+</section>
+
 
 

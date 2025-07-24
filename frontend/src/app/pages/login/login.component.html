@@ -1,43 +1,32 @@
-<h2>Iniciar Sesión</h2>
+<section class="login-container">
+  <h1>🔐 Iniciar sesión</h1>
+  <p>Accede a tu cuenta para comprar y gestionar tus pedidos.</p>
 
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-  <div class="mb-3">
-    <label for="correo" class="form-label">Correo electrónico</label>
-    <input
-      type="email"
-      class="form-control"
-      id="correo"
-      formControlName="correo"
-      [class.is-invalid]="f['correo'].invalid && f['correo'].touched"
-    />
-    <div *ngIf="f['correo'].invalid && f['correo'].touched" class="text-danger">
-      <div *ngIf="f['correo'].errors?.['required']">El correo es obligatorio</div>
-      <div *ngIf="f['correo'].errors?.['email']">Formato de correo inválido</div>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="correo">Correo:</label>
+      <input id="correo" formControlName="correo" type="email" placeholder="usuario@correo.com">
+      <div *ngIf="loginForm.get('correo')?.invalid && loginForm.get('correo')?.touched">
+        <small *ngIf="loginForm.get('correo')?.errors?.['required']">Este campo es obligatorio.</small>
+        <small *ngIf="loginForm.get('correo')?.errors?.['email']">Formato inválido.</small>
+      </div>
     </div>
-  </div>
 
-  <div class="mb-3">
-    <label for="password" class="form-label">Contraseña</label>
-    <input
-      type="password"
-      class="form-control"
-      id="password"
-      formControlName="password"
-      [class.is-invalid]="f['password'].invalid && f['password'].touched"
-    />
-    <div *ngIf="f['password'].invalid && f['password'].touched" class="text-danger">
-      <div *ngIf="f['password'].errors?.['required']">La contraseña es obligatoria</div>
+    <div class="form-group">
+      <label for="password">Contraseña:</label>
+      <input id="password" formControlName="password" type="password" placeholder="********">
+      <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+        <small>Campo obligatorio.</small>
+      </div>
     </div>
-  </div>
 
-  <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">
-    Ingresar
-  </button>
+    <button type="submit" [disabled]="loginForm.invalid">Iniciar sesión</button>
 
-  <div *ngIf="error" class="alert alert-danger mt-3">
-    {{ error }}
-  </div>
-</form>
+    <div *ngIf="error" class="error">{{ error }}</div>
+  </form>
+</section>
+
+
 
 
 

@@ -1,33 +1,40 @@
-const bcrypt = require('bcrypt');
+// controllers/usuarios.controller.js
 const Usuario = require('../models/Usuario');
+const bcrypt = require('bcryptjs'); // ✅ Asegúrate de tenerlo instalado: npm install bcryptjs
 
 const crearUsuario = async (req, res) => {
-  try {
-    const { nombre, correo, contraseña, rol } = req.body;
+  console.log('📦 Datos recibidos en /usuarios:', req.body);
 
-    
+  const { nombre, correo, password } = req.body;
+
+  if (!nombre || !correo || !password) {
+    return res.status(400).json({ mensaje: 'Todos los campos son obligatorios' });
+  }
+
+  try {
     const usuarioExistente = await Usuario.findOne({ correo });
     if (usuarioExistente) {
       return res.status(400).json({ mensaje: 'El correo ya está registrado' });
     }
 
-   
-    const salt = await bcrypt.genSalt(10);
-    const contraseñaHasheada = await bcrypt.hash(contraseña, salt);
+    // ✅ Hashear la contraseña antes de guardar
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    
     const nuevoUsuario = new Usuario({
       nombre,
       correo,
-      contraseña: contraseñaHasheada,
-      rol
+      password: hashedPassword
     });
 
-    const usuarioGuardado = await nuevoUsuario.save();
-    res.status(201).json(usuarioGuardado);
+    await nuevoUsuario.save();
+
+    res.status(201).json({ mensaje: 'Usuario creado correctamente' });
   } catch (error) {
-    res.status(400).json({ error: 'Error al crear usuario', detalles: error.message });
+    console.error('❌ Error al crear usuario:', error);
+    res.status(500).json({ mensaje: 'Error interno del servidor' });
   }
 };
 
 module.exports = { crearUsuario };
+
+

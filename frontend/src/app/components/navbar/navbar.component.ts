@@ -1,29 +1,28 @@
-
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
+  imports: [CommonModule, RouterModule],
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css'],
-  imports: [CommonModule]
+  styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
-  usuario: any = null;
+  usuario: any = null; // ✅ Declarar la propiedad
 
-  constructor(private authService: AuthService) {}
-
-  ngOnInit(): void {
-    this.usuario = this.authService.obtenerUsuarioActual();
+  constructor(public authService: AuthService) {
+    this.usuario = this.authService.obtenerUsuarioActual(); // ✅ Obtener del servicio
   }
 
-  cerrarSesion(): void {
+  cerrarSesion() {
     this.authService.cerrarSesion();
-    window.location.href = '/login';
+    this.usuario = null;
   }
 }
+
 
 
 
